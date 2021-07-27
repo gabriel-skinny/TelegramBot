@@ -23,15 +23,14 @@ bot.on('message', async (msg) => {
 
   if (msg.photo) {
 
-    const file = fs.createWriteStream(`./photos/${msg.caption}.png`)
-    const fileLink = await bot.getFileLink(msg.photo[1].file_id);
+    const arrayLength = msg.photo.length;
+
+    const file = fs.createWriteStream(`./photos/${msg.caption}.jpeg`)
+    const fileLink = await bot.getFileLink(msg.photo[arrayLength-1].file_id);
 
     http.get(`${fileLink}`, (response) => {
       response.pipe(file);
     });
-
-
-    console.log("ok");
 
     bot.sendMessage(chatId, 'Arquivo baixado');
   }

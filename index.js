@@ -2,13 +2,12 @@ const TelegramBot = require('node-telegram-bot-api');
 const http = require('https'); 
 const fs = require('fs');
 
-
 const token = '1933388008:AAEWIx74qMfEHjSEFFL5mBlv9SCouZUfKcQ';
 
 const bot = new TelegramBot(token, {polling: true});
 
 function download(url, dest) {
-  return new Promise((resolve, reject) => {
+  return new Promise( (resolve, reject) => {
       const file = fs.createWriteStream(dest, { flags: "wx" });
 
       const request = http.get(url, response => {
@@ -37,7 +36,7 @@ function download(url, dest) {
           if (err.code === "EEXIST") {
               reject("File already exists");
           } else {
-              fs.unlink(dest, () => {}); // Delete temp file
+              fs.unlink(dest, () => {}); 
               reject(err.message);
           }
       });
@@ -53,11 +52,10 @@ bot.on('message', async (msg) => {
 
     const fileLink = await bot.getFileLink(msg.photo[arrayLength-1].file_id);
 
-    await download(fileLink, `./photos/${msg.caption}.jpeg`)
-
-    bot.sendMessage(chatId, 'Arquivo baixado');
+    download(fileLink, `./photos/${msg.caption}.jpeg`)
+    .catch(err => {
+        throw new Error(err);
+    })
+    .then(() => bot.sendMessage(chatId, 'Arquivo baixado'))   
   }
-
-
-  bot.sendMessage(chatId, 'Ok');
 });

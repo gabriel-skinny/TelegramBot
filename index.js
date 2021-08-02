@@ -53,9 +53,10 @@ bot.on('message', async (msg) => {
     const fileLink = await bot.getFileLink(msg.photo[arrayLength-1].file_id);
 
     download(fileLink, `./photos/${msg.caption}.jpeg`)
-    .catch(err => {
-        throw new Error(err);
-    })
-    .then(() => bot.sendMessage(chatId, 'Arquivo baixado'))   
+        .then(() => bot.sendMessage(chatId, "Arquivo baixado"))
+        .catch(err => {
+            bot.sendMessage(chatId, "Error")
+            throw new Error(err)
+        })
   }
 });

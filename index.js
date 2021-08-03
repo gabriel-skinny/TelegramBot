@@ -1,6 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 const http = require('https'); 
 const fs = require('fs');
+require("dotenv").config();
 
 const token = process.env.BOT_TOKEN;
 
